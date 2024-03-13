@@ -8,7 +8,8 @@ public class SwipeController : MonoBehaviour
     Vector3 clickInicial;
     Vector3 alSoltarClick;
 
-    float offset = 100f;
+    public float offset = 100f;
+    public float leanDuration = 0.3f;
 
     public GameObject cube;
     void Start()
@@ -24,9 +25,9 @@ public class SwipeController : MonoBehaviour
             clickInicial = Input.mousePosition;
         }
 
-        if(Input.GetMouseButtonUp(1)) 
+        if(Input.GetMouseButtonUp(0)) 
         {
-            alSoltarClick = Input.mousePosition;
+            alSoltarClick = Input.mousePosition;    
             Vector3 diferencia = alSoltarClick - clickInicial;
             Debug.Log(diferencia);
 
@@ -37,21 +38,23 @@ public class SwipeController : MonoBehaviour
             
             if(diferencia.x < -offset)
             {
-                MoveTarget(- cube.GetComponent<Transform>().right); 
+                MoveTarget(-cube.GetComponent<Transform>().right); 
             }
             if (diferencia.y < -offset)
             {
-                MoveTarget(cube.GetComponent<Transform>().right);
+                MoveTarget(-cube.GetComponent<Transform>().forward);
             }
             if (diferencia.x > offset)
             {
                 Debug.Log("Se ha movido hacia la dch");
+                MoveTarget(cube.GetComponent<Transform>().right);
+
             }
             if (diferencia.y > offset)
             {
                 Debug.Log("Se ha movido hacia arriba");
+                MoveTarget(cube.GetComponent<Transform>().forward);
             }
-
 
 
         }
@@ -60,6 +63,6 @@ public class SwipeController : MonoBehaviour
 
     void MoveTarget(Vector3 direction)
     {
-        cube.transform.position += direction;
+        LeanTween.move(cube, cube.transform.position + direction,leanDuration).setEase(LeanTweenType.easeOutQuad);
     }
 }

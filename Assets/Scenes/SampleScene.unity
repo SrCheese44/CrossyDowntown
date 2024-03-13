@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d203d60f9a4f83c4ba38b29fbc847701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  offset: 100
   cube: {fileID: 0}
 --- !u!4 &345431368
 Transform:
@@ -200,6 +201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d203d60f9a4f83c4ba38b29fbc847701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  offset: 100
   cube: {fileID: 671625382}
 --- !u!65 &671625384
 BoxCollider:
@@ -466,8 +468,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0026818998, y: 0.9733004, z: -0.22923675, w: -0.011387014}
-  m_LocalPosition: {x: 0.14611575, y: 5.644265, z: 11.181334}
+  m_LocalRotation: {x: -0.3567661, y: -0.005047707, z: 0.0019278779, w: -0.9341781}
+  m_LocalPosition: {x: -0.23636673, y: 7.958656, z: -9.120827}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
