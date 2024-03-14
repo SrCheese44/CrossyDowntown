@@ -9,15 +9,32 @@ public class SwipeController : MonoBehaviour
     Vector3 alSoltarClick;
 
     public float offset = 100f;
-    public float leanDuration = 0.3f;
+    
 
-    public GameObject cube;
-    void Start()
+    
+
+
+    public delegate void SwipeControllerDelegate(Vector3 direction);
+    public event SwipeControllerDelegate OnSwipe;
+
+    public static SwipeController instance;
+    void Awake()
     {
+        
+        
+            if (SwipeController.instance == null)
+            {
+                SwipeController.instance = this;
+            }
+            else
+            {
+                Destroy(this);
+            }
+
         
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         if(Input.GetMouseButtonDown(0)) 
@@ -27,33 +44,32 @@ public class SwipeController : MonoBehaviour
 
         if(Input.GetMouseButtonUp(0)) 
         {
-            alSoltarClick = Input.mousePosition;    
-            Vector3 diferencia = alSoltarClick - clickInicial;
-            Debug.Log(diferencia);
-
-            ///Si X es negativa, izq
-            ///Si X es positiva, dch
-            ///si y es negativa baja
-            ///si y es positiva sube
+            alSoltarClick = Input.mousePosition;
             
-            if(diferencia.x < -offset)
-            {
-                MoveTarget(-cube.GetComponent<Transform>().right); 
-            }
-            if (diferencia.y < -offset)
-            {
-                MoveTarget(-cube.GetComponent<Transform>().forward);
-            }
-            if (diferencia.x > offset)
-            {
-                Debug.Log("Se ha movido hacia la dch");
-                MoveTarget(cube.GetComponent<Transform>().right);
+            Vector3 diferencia = alSoltarClick - clickInicial;
 
-            }
-            if (diferencia.y > offset)
+            
+            if(Mathf.Abs(diferencia.magnitude) > offset)
             {
-                Debug.Log("Se ha movido hacia arriba");
-                MoveTarget(cube.GetComponent<Transform>().forward);
+                diferencia = diferencia.normalized;
+                diferencia.z = diferencia.y;
+
+                if(Mathf.Abs(diferencia.x)> Mathf.Abs(diferencia.z))
+                {
+                    diferencia.z = 0.0f;
+                }
+
+                else
+                {
+                    diferencia.x = 0.0f;
+                }
+
+                diferencia.y = 0.0f;
+
+                if(OnSwipe != null)
+                {
+                    OnSwipe(diferencia);
+                }
             }
 
 
@@ -61,8 +77,5 @@ public class SwipeController : MonoBehaviour
     }
 
 
-    void MoveTarget(Vector3 direction)
-    {
-        LeanTween.move(cube, cube.transform.position + direction,leanDuration).setEase(LeanTweenType.easeOutQuad);
-    }
+    
 }
