@@ -25,6 +25,18 @@ public class PlayerBehaviour : MonoBehaviour
 
     void MoveTarget(Vector3 direction)
     {
+
+
+        if(direction.x > 0)
+        {
+            transform.eulerAngles = new Vector3(0f, 90f, 0f);
+        }
+
+        if(direction.x < 0) 
+        {
+            transform.eulerAngles = new Vector3(0f, -90f, 0f);
+        }
+
         LeanTween.move(cube, cube.transform.position + direction / 2 + Vector3.up / 2, leanDuration / 2).setOnComplete(() => 
         { LeanTween.moveLocal(cube, cube.transform.position + direction / 2 - Vector3.up / 2, leanDuration / 2); });
 
