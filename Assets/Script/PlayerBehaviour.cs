@@ -53,19 +53,19 @@ public class PlayerBehaviour : MonoBehaviour
             {
                 if (m_MoveDirection.x > 0)
                 {
-                    transform.eulerAngles = new Vector3(0, -90f, 0);
+                    transform.eulerAngles = new Vector3(0, 90f, 0);
                 }
                 else if (m_MoveDirection.x < 0)
                 {
-                    transform.eulerAngles = new Vector3(0, 90f, 0);
+                    transform.eulerAngles = new Vector3(0, -90f, 0);
                 }
                 else if (m_MoveDirection.z > 0)
                 {
-                    transform.eulerAngles = new Vector3(0, 180f, 0);
+                    transform.eulerAngles = new Vector3(0, 0, 0);
                 }
                 else if (m_MoveDirection.z < 0)
                 {
-                    transform.eulerAngles = new Vector3(0, 0, 0);
+                    transform.eulerAngles = new Vector3(0, 180f, 0);
                 }
 
                 LeanTween.move(m_Player, m_Player.transform.position + new Vector3(m_MoveDirection.x / 2, 0, 0) + Vector3.up / 2, m_Duration / 2).setEase(LeanTweenType.easeOutQuad).setOnComplete(() =>

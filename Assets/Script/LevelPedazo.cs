@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class LevelPedazo : MonoBehaviour
 {
@@ -37,9 +38,30 @@ public class LevelPedazo : MonoBehaviour
 
     void MoveTarget(Vector3 m_Direction)
     {
+        RaycastHit raycastHit = PlayerBehaviour.m_RaycastDirection;
+
         if (m_PlayerBehaviour != null && m_PlayerBehaviour.m_CanJump &&  m_CanMove)
         {
-            LeanTween.move(m_Terrain, m_Terrain.transform.position + new Vector3(0, 0, -m_Direction.normalized.z), m_Duration).setEase(LeanTweenType.easeOutQuad);
+            if (Physics.Raycast(m_PlayerBehaviour.transform.position + new Vector3(0, 1f, 0), m_Direction, out raycastHit, 1f))
+            {
+                if (raycastHit.collider.tag != "ProceduralTerrain")
+                {
+                    if (m_Direction.z != 0)
+                    {
+                        m_Direction.z = 0;
+                    }
+
+                }
+
+               
+
+            }
+            if(m_Direction != Vector3.zero)
+            {
+
+                LeanTween.move(m_Terrain, m_Terrain.transform.position + new Vector3(0, 0, -m_Direction.normalized.z), m_Duration).setEase(LeanTweenType.easeOutQuad);
+            }
+
             Debug.Log(m_StepsCounter);
             if (m_Direction.normalized.z == 1)
             {

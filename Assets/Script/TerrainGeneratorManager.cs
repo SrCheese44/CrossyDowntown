@@ -10,6 +10,8 @@ public class TerrainGeneratorManager : MonoBehaviour
     public GameObject m_TerrainSpawn;
     public GameObject m_InicialTerrainSpawn;
     public GameObject[] m_InicialTerrains;
+    public GameObject m_proceduralSpawn;
+    public GameObject[] m_ProceduralTerrains;
 
 
     void Start()
@@ -17,6 +19,7 @@ public class TerrainGeneratorManager : MonoBehaviour
         int m_RandomIndex = Random.Range(0, m_InicialTerrains.Length);
         ObjectPool.PreLoad(m_TerrainPrefab, m_Nterrain);
         m_InicialTerrains[m_RandomIndex].transform.position = m_InicialTerrainSpawn.transform.position;
+        m_ProceduralTerrains[m_RandomIndex].transform.position = m_proceduralSpawn.transform.position;
     }
 
     public void RecycleTerrain(GameObject m_Terrain)
