@@ -1,21 +1,17 @@
-using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectPool : MonoBehaviour
 {
-
     private static ObjectPool instance;
-    //Diccionario encargado de la cola de objetos
-    static Dictionary<int, Queue<GameObject>> pool = new Dictionary<int, Queue<GameObject>>();
-    //Diccionario en el cual los objetos de la cola se ordenanbb
-    static Dictionary<int, GameObject> fillPool = new Dictionary<int, GameObject>();
 
-    //Singleton
-    private void Awake()
+    private static Dictionary<int, Queue<GameObject>> pool = new Dictionary<int, Queue<GameObject>>();
+    private static Dictionary<int, GameObject> parents = new Dictionary<int, GameObject>();
+    private static HashSet<int> preloadedPrefabs = new HashSet<int>();
+
+    void Awake()
     {
-
         if (instance == null)
         {
             instance = this;
@@ -25,69 +21,94 @@ public class ObjectPool : MonoBehaviour
             Destroy(this);
         }
     }
-    //Esta clase se encarga de cargar el objeto antes de que sea necesario
-    public static void PreLoad(GameObject Prefab, int amount)
+
+    /// Preload objects into the ObjectPool
+    public static void PreLoad(GameObject objectToPool, int amount)
     {
-        //almacenamos la id del objeto para identificarlo mas tarde
-        int id = Prefab.GetInstanceID();
-        //Creamos el objeto que ordenará la jerarquía
-        GameObject category = new GameObject();
-        category.name = Prefab.name + "Pool";
-        //Se añade a la jerarquía
-        fillPool.Add(id, category);
-        //Guardamos el objeto en una cola nueva que creamos
+        int id = objectToPool.GetInstanceID();
+
+        if (preloadedPrefabs.Contains(id))
+        {
+            Debug.LogWarning("Prefab already preloaded into the ObjectPool.");
+            return;
+        }
+
+        GameObject parent = new GameObject();
+        parent.name = objectToPool.name + " Pool";
+        parents.Add(id, parent);
+
         pool.Add(id, new Queue<GameObject>());
 
         for (int i = 0; i < amount; i++)
         {
-            CreateObject(Prefab);
+            CreateObject(objectToPool);
         }
-    }
-    //Pasamos el objeto original, lo clonaremos
-    static void CreateObject(GameObject Prefab)
-    {
-        int id = Prefab.GetInstanceID();
-        //clonamos el objeto
-        GameObject prefabCopy = Instantiate(Prefab) as GameObject;
-        //le pasamos el id del padre para hacerlo hijo
-        prefabCopy.transform.SetParent(GetParent(id).transform);
-        prefabCopy.SetActive(false);
-        //lo metemos en el diccionario llamado pool
-        pool[id].Enqueue(prefabCopy);
-    }
-    //Se devuelve el ID del padre
-    static GameObject GetParent(int parentID)
-    {
-        GameObject category;
-        fillPool.TryGetValue(parentID, out category);
-        return category;
+
+        preloadedPrefabs.Add(id);
     }
 
-    public static GameObject GetObject(GameObject objectReadyToPool)
-    {//Se almacena el id del objeto para identificar su pool
-        int id = objectReadyToPool.GetInstanceID();
-        //en el caso de que el pool esté vacio, se crea el objeto
+    /// Create an object in the ObjectPool
+    private static void CreateObject(GameObject objectToPool)
+    {
+        int id = objectToPool.GetInstanceID();
+        GameObject go = Instantiate(objectToPool) as GameObject;
+        go.transform.SetParent(GetParent(id).transform);
+        go.SetActive(false);
+        pool[id].Enqueue(go);
+    }
+
+    /// Retrieve an object from the ObjectPool
+    public static GameObject GetObject(GameObject objectToPool)
+    {
+        int id = objectToPool.GetInstanceID();
+
         if (pool[id].Count == 0)
         {
-            CreateObject(objectReadyToPool);
+            CreateObject(objectToPool);
         }
-        //sacamos el objeto de la cola
-        GameObject prefabCopy = pool[id].Dequeue();
-        prefabCopy.SetActive(true);
-        return prefabCopy;
+
+        GameObject go = pool[id].Dequeue();
+        go.SetActive(true);
+
+        return go;
     }
 
-
-
-    public static void RecicleObject(GameObject objectReadyToPool, GameObject objectToRecicle)
+    /// Recycle an object into the ObjectPool
+    public static void RecycleObject(GameObject objectToPool, GameObject objectToRecycle)
     {
-        //Se saca el id para saber a que piscina va
-        int id = objectReadyToPool.GetInstanceID();
-        //Se mete el objeto en la cola y lo desactivamos
-        pool[id].Enqueue(objectToRecicle);
-        objectToRecicle.SetActive(false);
+        int id = objectToPool.GetInstanceID();
+        pool[id].Enqueue(objectToRecycle);
+        objectToRecycle.SetActive(false);
     }
 
+    /// Clear all objects from the ObjectPool
+    public static void ClearPool()
+    {
+        foreach (var queue in pool.Values)
+        {
+            foreach (GameObject obj in queue)
+            {
+                Destroy(obj);
+            }
+            queue.Clear();
+        }
 
+        pool.Clear();
 
+        foreach (var parent in parents.Values)
+        {
+            Destroy(parent);
+        }
+
+        parents.Clear();
+        preloadedPrefabs.Clear();
+    }
+
+    /// Retrieve the parent object for a given prefab ID
+    private static GameObject GetParent(int parentID)
+    {
+        GameObject parent;
+        parents.TryGetValue(parentID, out parent);
+        return parent;
+    }
 }

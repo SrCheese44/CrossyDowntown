@@ -5,77 +5,66 @@ using UnityEngine;
 public class SwipeController : MonoBehaviour
 {
 
-    Vector3 clickInicial;
-    Vector3 alSoltarClick;
-
-    public float offset = 100f;
-    
-
-    
+    Vector3 m_ClickInicial;
+    Vector3 m_AlSoltarClick;
+    public float m_Offset = 100f;
 
 
-    public delegate void SwipeControllerDelegate(Vector3 direction);
-    public event SwipeControllerDelegate OnSwipe;
+    //Events
+    public delegate void Movement(Vector3 m_Direction);
+    public event Movement OnMovement;
 
+    //Instance
     public static SwipeController instance;
-    void Awake()
-    {
-        
-        
-            if (SwipeController.instance == null)
-            {
-                SwipeController.instance = this;
-            }
-            else
-            {
-                Destroy(this);
-            }
 
-        
+    private void Awake()
+    {
+        if (SwipeController.instance != null)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            SwipeController.instance = this;
+        }
     }
 
-    
+
     void Update()
     {
-        if(Input.GetMouseButtonDown(0)) 
+        if (Input.GetMouseButtonDown(0))
         {
-            clickInicial = Input.mousePosition;
+            m_ClickInicial = Input.mousePosition;
+
         }
 
-        if(Input.GetMouseButtonUp(0)) 
+        if (Input.GetMouseButtonUp(0))
         {
-            alSoltarClick = Input.mousePosition;
-            
-            Vector3 diferencia = alSoltarClick - clickInicial;
-
-            
-            if(Mathf.Abs(diferencia.magnitude) > offset)
+            m_AlSoltarClick = Input.mousePosition;
+            Vector3 m_Diferencia = m_AlSoltarClick - m_ClickInicial;
+            if (Mathf.Abs(m_Diferencia.magnitude) > m_Offset)
             {
-                diferencia = diferencia.normalized;
-                diferencia.z = diferencia.y;
+                m_Diferencia = m_Diferencia.normalized;
+                m_Diferencia.z = m_Diferencia.y;
 
-                if(Mathf.Abs(diferencia.x)> Mathf.Abs(diferencia.z))
+                if (Mathf.Abs(m_Diferencia.x) > Mathf.Abs(m_Diferencia.z))
                 {
-                    diferencia.z = 0.0f;
+                    m_Diferencia.z = 0.0f;
                 }
-
                 else
                 {
-                    diferencia.x = 0.0f;
+                    m_Diferencia.x = 0.0f;
                 }
 
-                diferencia.y = 0.0f;
+                m_Diferencia.y = 0.0f;
 
-                if(OnSwipe != null)
+                if (OnMovement != null)
                 {
-                    OnSwipe(diferencia);
+                    OnMovement(m_Diferencia);
                 }
+
             }
-
-
         }
     }
 
-
-    
 }
