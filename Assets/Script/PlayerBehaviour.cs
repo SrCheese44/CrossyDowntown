@@ -39,6 +39,7 @@ public class PlayerBehaviour : MonoBehaviour
             if (Physics.Raycast(transform.position + new Vector3(0, 1f, 0), m_MoveDirection, out m_Hitinfo, 1f))
             {
                 Debug.Log("Hit Something, Restricting Movement");
+                Debug.DrawRay(transform.position, transform.TransformDirection(0, 0, 1) * m_Hitinfo.distance, Color.red);
 
                 m_RaycastDirection = m_Hitinfo;
 
@@ -47,6 +48,10 @@ public class PlayerBehaviour : MonoBehaviour
                     m_MoveDirection.x = 0;
                 }
 
+            }
+            else
+            {
+                Debug.DrawRay(transform.position, transform.TransformDirection(0, 0, 1) * 20f, Color.green);
             }
 
             if (m_MoveDirection != Vector3.zero)
