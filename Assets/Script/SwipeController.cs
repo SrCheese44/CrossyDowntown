@@ -19,13 +19,13 @@ public class SwipeController : MonoBehaviour
 
     private void Awake()
     {
-        if (SwipeController.instance != null)
+        if (SwipeController.instance == null)
         {
-            Destroy(this);
+            SwipeController.instance = this;
         }
         else
         {
-            SwipeController.instance = this;
+            Destroy(this);
         }
     }
 
