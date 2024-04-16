@@ -7,13 +7,19 @@ public class PlayerBehaviour : MonoBehaviour
 {
     public SwipeController m_SwipeController;
 
+    public static PlayerBehaviour instance;
+
     public Rigidbody rb;
     [SerializeField]
     SkinnedMeshRenderer mesh;
 
     public LevelPedazo levelPedazo;
 
+    public AudioSource coinSound;
+
     public int m_StepsBack;
+
+    public bool playerDeath = false;
 
     public float m_Offset = 100f;
     public float m_Duration = 1f;
@@ -25,6 +31,15 @@ public class PlayerBehaviour : MonoBehaviour
     public void Awake()
     {
         m_Player = this.gameObject;
+
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
     }
 
     public void Start()
@@ -46,7 +61,7 @@ public class PlayerBehaviour : MonoBehaviour
             Vector3 m_MoveDirection = m_Direction.normalized;
 
 
-            if (Physics.Raycast(transform.position + new Vector3(0, 1f, 0), m_MoveDirection, out m_Hitinfo, 1f))
+            if (Physics.Raycast(transform.position + new Vector3(0, 1.9f, 0), m_MoveDirection, out m_Hitinfo, 1f))
             {
                 Debug.Log("Hit Something, Restricting Movement");
                 Debug.DrawRay(transform.position, transform.TransformDirection(0, 0, 1) * m_Hitinfo.distance, Color.red);
@@ -113,7 +128,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Terrain") || collision.gameObject.CompareTag("ProceduralTerrain"))
+        if (collision.gameObject.CompareTag("Terrain") || collision.gameObject.CompareTag("Log"))
         {
             m_CanJump = true;
         }
@@ -127,6 +142,7 @@ public class PlayerBehaviour : MonoBehaviour
             GameUI.instance.coinAmount += 1;
             other.gameObject.SetActive(false);
             GameUI.instance.DisplayText();
+            coinSound.Play();
         }
 
         if (other.gameObject.CompareTag("Death"))
@@ -134,6 +150,7 @@ public class PlayerBehaviour : MonoBehaviour
             GameUI.instance.GameEnding();
             this.gameObject.SetActive(false);
             SwipeController.instance.enabled = false;
+            playerDeath = true;
         }
     }
 }

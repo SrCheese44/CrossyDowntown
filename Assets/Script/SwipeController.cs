@@ -9,6 +9,7 @@ public class SwipeController : MonoBehaviour
     Vector3 m_AlSoltarClick;
     public float m_Offset = 100f;
 
+    Vector3 s_Click;
 
     //Events
     public delegate void Movement(Vector3 m_Direction);
@@ -35,6 +36,7 @@ public class SwipeController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             m_ClickInicial = Input.mousePosition;
+            s_Click = Vector3.forward;
 
         }
 
@@ -62,7 +64,16 @@ public class SwipeController : MonoBehaviour
                 {
                     OnMovement(m_Diferencia);
                 }
+               
+            }
+            else
+            {
+                Vector3 click = s_Click;
 
+                if (OnMovement != null)
+                {
+                    OnMovement(click);
+                }
             }
         }
     }

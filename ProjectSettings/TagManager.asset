@@ -8,6 +8,8 @@ TagManager:
   - ProceduralTerrain
   - Coin
   - Death
+  - Prop
+  - Log
   layers:
   - Default
   - TransparentFX

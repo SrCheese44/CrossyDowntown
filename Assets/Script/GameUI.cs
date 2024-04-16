@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameUI : MonoBehaviour
 {
@@ -21,12 +22,16 @@ public class GameUI : MonoBehaviour
     public LevelPedazo levelBehaviour;
 
     [SerializeField]
+    public GameObject resetButton;
+
+    [SerializeField]
     public GameObject gameEndingScreen;
     [SerializeField]
     public GameObject gameUI;
     [SerializeField]
     public TextMeshProUGUI textEnding;
-  
+    [SerializeField]
+    public TextMeshProUGUI newRecordLabel;
 
     public GameObject crownImage;
 
@@ -101,9 +106,17 @@ public class GameUI : MonoBehaviour
         gameUI.SetActive(false);
         if (newRecord)
         {
-            
+            newRecordLabel.text = "New record!";
             crownImage.SetActive(true);
         }
-       
+        else
+        {
+            newRecordLabel.text = "Record: " + record;
+        }
+    }
+
+    public void ResetButton()
+    {
+        SceneManager.LoadScene(0);
     }
 }

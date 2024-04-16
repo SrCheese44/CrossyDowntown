@@ -71,7 +71,7 @@ public class PropsBehaviour : MonoBehaviour
         if (other.gameObject.CompareTag("Recycle"))
         {
             this.gameObject.SetActive(false);
-            pb_SpawnProps.prefabsToSpawn.Add(this.gameObject);
+            //pb_SpawnProps.SpawnRandomObject.Add(this.gameObject);
         }
     }
 }
