@@ -19,19 +19,19 @@ public class PropMov : MonoBehaviour
 
     public void OnEnable()
     {
-        m_SwipeController.OnMovement += MoveTarget;
+        m_SwipeController.onMovement += MoveTarget;
     }
 
     public void OnDisable()
     {
-        m_SwipeController.OnMovement -= MoveTarget;
+        m_SwipeController.onMovement -= MoveTarget;
     }
 
     void MoveTarget(Vector3 m_Direction)
     {
         RaycastHit m_Hitinfo = PlayerBehaviour.m_RaycastDirection;
 
-        if (m_PlayerBehaviour != null && m_PlayerBehaviour.m_CanJump && m_CanMove)
+        if (m_PlayerBehaviour != null && m_PlayerBehaviour.p_CanJump && m_CanMove)
         {
 
             if (Physics.Raycast(m_PlayerBehaviour.transform.position + new Vector3(0, 1f, 0), m_Direction, out m_Hitinfo, 1f))
@@ -51,9 +51,6 @@ public class PropMov : MonoBehaviour
                 LeanTween.move(m_Terrain, m_Terrain.transform.position + new Vector3(0, 0, -m_Direction.normalized.z), m_Duration).setEase(LeanTweenType.easeOutQuad);
             }
 
-
-           
-
         }
     }
 
@@ -63,7 +60,7 @@ public class PropMov : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            m_PlayerBehaviour.m_CanJump = true;
+            m_PlayerBehaviour.p_CanJump = true;
 
         }
     }

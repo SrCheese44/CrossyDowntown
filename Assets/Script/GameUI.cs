@@ -19,7 +19,7 @@ public class GameUI : MonoBehaviour
     public float fadeDuration = 1f;
     public float displayDuration = 2f;
 
-    public LevelPedazo levelBehaviour;
+    public LevelBehaviour levelBehaviour;
 
     [SerializeField]
     public GameObject resetButton;
@@ -118,5 +118,10 @@ public class GameUI : MonoBehaviour
     public void ResetButton()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

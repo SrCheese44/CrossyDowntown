@@ -5,15 +5,15 @@ using UnityEngine;
 public class SwipeController : MonoBehaviour
 {
 
-    Vector3 m_ClickInicial;
-    Vector3 m_AlSoltarClick;
-    public float m_Offset = 100f;
+    Vector3 s_ClickInicial;
+    Vector3 s_AlSoltarClick;
+    public float s_Offset = 100f;
 
     Vector3 s_Click;
 
     //Events
     public delegate void Movement(Vector3 m_Direction);
-    public event Movement OnMovement;
+    public event Movement onMovement;
 
     //Instance
     public static SwipeController instance;
@@ -35,16 +35,16 @@ public class SwipeController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            m_ClickInicial = Input.mousePosition;
+            s_ClickInicial = Input.mousePosition;
             s_Click = Vector3.forward;
 
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            m_AlSoltarClick = Input.mousePosition;
-            Vector3 m_Diferencia = m_AlSoltarClick - m_ClickInicial;
-            if (Mathf.Abs(m_Diferencia.magnitude) > m_Offset)
+            s_AlSoltarClick = Input.mousePosition;
+            Vector3 m_Diferencia = s_AlSoltarClick - s_ClickInicial;
+            if (Mathf.Abs(m_Diferencia.magnitude) > s_Offset)
             {
                 m_Diferencia = m_Diferencia.normalized;
                 m_Diferencia.z = m_Diferencia.y;
@@ -60,9 +60,9 @@ public class SwipeController : MonoBehaviour
 
                 m_Diferencia.y = 0.0f;
 
-                if (OnMovement != null)
+                if (onMovement != null)
                 {
-                    OnMovement(m_Diferencia);
+                    onMovement(m_Diferencia);
                 }
                
             }
@@ -70,9 +70,9 @@ public class SwipeController : MonoBehaviour
             {
                 Vector3 click = s_Click;
 
-                if (OnMovement != null)
+                if (onMovement != null)
                 {
-                    OnMovement(click);
+                    onMovement(click);
                 }
             }
         }

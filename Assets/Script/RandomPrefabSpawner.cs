@@ -1,21 +1,25 @@
-using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class RandomPrefabSpawner : MonoBehaviour
 {
-    public List<GameObject> objectsList;
-    public List<GameObject> inactiveObjects = new List<GameObject>();
-    public GameObject activeObject;
+    public List<GameObject> objectsListMiddle;
+    public List<GameObject> inactiveObjectsMiddle = new List<GameObject>();
+    public GameObject activeObjectMiddle;
 
     [SerializeField] GameObject spawnPoint;
     [SerializeField] GameObject propParent;
 
+    private int propsActivated = 0;
+
+
     private void Start()
     {
-        foreach (GameObject prefab in objectsList)
+        foreach (GameObject prefab in objectsListMiddle)
         {
             prefab.SetActive(false);
-            inactiveObjects.Add(prefab);
+            inactiveObjectsMiddle.Add(prefab);
         }
 
         SpawnRandomPrefab();
@@ -23,7 +27,7 @@ public class RandomPrefabSpawner : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject == activeObject)
+        if (other.gameObject == activeObjectMiddle)
         {
             SpawnRandomPrefab();
         }
@@ -31,18 +35,23 @@ public class RandomPrefabSpawner : MonoBehaviour
 
     public void SpawnRandomPrefab()
     {
-        if (inactiveObjects.Count > 0)
+        if (inactiveObjectsMiddle.Count > 0)
         {
-            int randomIndex = Random.Range(0, inactiveObjects.Count);
+            int randomIndex = Random.Range(0, inactiveObjectsMiddle.Count);
 
-            activeObject = inactiveObjects[randomIndex];
-            activeObject.SetActive(true);
+            activeObjectMiddle = inactiveObjectsMiddle[randomIndex];
+            activeObjectMiddle.SetActive(true);
 
-            activeObject.transform.position = spawnPoint.transform.position;
+            activeObjectMiddle.transform.position = spawnPoint.transform.position;
 
-            inactiveObjects.RemoveAt(randomIndex);
+            inactiveObjectsMiddle.RemoveAt(randomIndex);
 
-            activeObject.transform.parent = propParent.transform;
+            activeObjectMiddle.transform.parent = propParent.transform;
+
+            GameObject coin = activeObjectMiddle.transform.GetChild(0).gameObject;
+            coin.SetActive(true);
+
+            propsActivated++;
         }
     }
 }

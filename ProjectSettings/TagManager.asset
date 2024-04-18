@@ -10,6 +10,7 @@ TagManager:
   - Death
   - Prop
   - Log
+  - InitialProp
   layers:
   - Default
   - TransparentFX

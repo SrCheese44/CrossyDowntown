@@ -13,7 +13,7 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     SkinnedMeshRenderer mesh;
 
-    public LevelPedazo levelPedazo;
+    public LevelBehaviour levelbehaviour;
 
     public AudioSource coinSound;
 
@@ -21,16 +21,16 @@ public class PlayerBehaviour : MonoBehaviour
 
     public bool playerDeath = false;
 
-    public float m_Offset = 100f;
-    public float m_Duration = 1f;
-    public GameObject m_Player;
-    public bool m_CanJump = true;
+    public float p_Offset = 100f;
+    public float p_Duration = 1f;
+    public GameObject p_Player;
+    public bool p_CanJump = true;
 
     
     public static RaycastHit m_RaycastDirection; 
     public void Awake()
     {
-        m_Player = this.gameObject;
+        p_Player = this.gameObject;
 
         if(instance == null)
         {
@@ -44,18 +44,18 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void Start()
     {
-        m_SwipeController.OnMovement += MoveTarget;
+        m_SwipeController.onMovement += MoveTarget;
     }
 
 
     public void OnDisable()
     {
-        m_SwipeController.OnMovement -= MoveTarget;
+        m_SwipeController.onMovement -= MoveTarget;
     }
 
     void MoveTarget(Vector3 m_Direction)
     {
-        if (m_CanJump)
+        if (p_CanJump)
         {
             RaycastHit m_Hitinfo;
             Vector3 m_MoveDirection = m_Direction.normalized;
@@ -98,29 +98,29 @@ public class PlayerBehaviour : MonoBehaviour
                     transform.eulerAngles = new Vector3(0, 180f, 0);
                 }
 
-                LeanTween.move(m_Player, m_Player.transform.position + new Vector3(m_MoveDirection.x / 2, 0, 0) + Vector3.up / 2, m_Duration / 2).setEase(LeanTweenType.easeOutQuad).setOnComplete(() =>
+                LeanTween.move(p_Player, p_Player.transform.position + new Vector3(m_MoveDirection.x / 2, 0, 0) + Vector3.up / 2, p_Duration / 2).setEase(LeanTweenType.easeOutQuad).setOnComplete(() =>
                 {
-                    LeanTween.move(m_Player, m_Player.transform.position + new Vector3(m_MoveDirection.x / 2, 0, 0) - Vector3.up / 2, m_Duration / 2).setEase(LeanTweenType.easeOutQuad);
+                    LeanTween.move(p_Player, p_Player.transform.position + new Vector3(m_MoveDirection.x / 2, 0, 0) - Vector3.up / 2, p_Duration / 2).setEase(LeanTweenType.easeOutQuad);
                 });
                 
                 if (m_StepsBack < 4 && m_Direction.normalized.z <= 0)
                 {
                     m_StepsBack++;
-                    LeanTween.move(m_Player, m_Player.transform.position + new Vector3(m_MoveDirection.x / 2, 0, m_MoveDirection.z / 2) + Vector3.up / 2, m_Duration / 2).setEase(LeanTweenType.easeOutQuad).setOnComplete(() =>
+                    LeanTween.move(p_Player, p_Player.transform.position + new Vector3(m_MoveDirection.x / 2, 0, m_MoveDirection.z / 2) + Vector3.up / 2, p_Duration / 2).setEase(LeanTweenType.easeOutQuad).setOnComplete(() =>
                     {
-                        LeanTween.move(m_Player, m_Player.transform.position + new Vector3(m_MoveDirection.x / 2, 0, m_MoveDirection.z / 2) - Vector3.up / 2, m_Duration / 2).setEase(LeanTweenType.easeOutQuad);
+                        LeanTween.move(p_Player, p_Player.transform.position + new Vector3(m_MoveDirection.x / 2, 0, m_MoveDirection.z / 2) - Vector3.up / 2, p_Duration / 2).setEase(LeanTweenType.easeOutQuad);
                     });
                 }
                 if (m_StepsBack != 0 && m_Direction.normalized.z >= 0)
                 {
                     m_StepsBack--;
-                    LeanTween.move(m_Player, m_Player.transform.position + new Vector3(m_MoveDirection.x / 2, 0, m_MoveDirection.z / 2) + Vector3.up / 2, m_Duration / 2).setEase(LeanTweenType.easeOutQuad).setOnComplete(() =>
+                    LeanTween.move(p_Player, p_Player.transform.position + new Vector3(m_MoveDirection.x / 2, 0, m_MoveDirection.z / 2) + Vector3.up / 2, p_Duration / 2).setEase(LeanTweenType.easeOutQuad).setOnComplete(() =>
                     {
-                        LeanTween.move(m_Player, m_Player.transform.position + new Vector3(m_MoveDirection.x / 2, 0, m_MoveDirection.z / 2) - Vector3.up / 2, m_Duration / 2).setEase(LeanTweenType.easeOutQuad);
+                        LeanTween.move(p_Player, p_Player.transform.position + new Vector3(m_MoveDirection.x / 2, 0, m_MoveDirection.z / 2) - Vector3.up / 2, p_Duration / 2).setEase(LeanTweenType.easeOutQuad);
                     });
                 }
 
-                m_CanJump = false;
+                p_CanJump = false;
             }
         }
     }
@@ -130,7 +130,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Terrain") || collision.gameObject.CompareTag("Log"))
         {
-            m_CanJump = true;
+            p_CanJump = true;
         }
 
     }

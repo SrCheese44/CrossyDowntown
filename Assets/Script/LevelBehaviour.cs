@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class LevelPedazo : MonoBehaviour
+public class LevelBehaviour : MonoBehaviour
 {
     public SwipeController m_SwipeController;
     public TerrainGeneratorManager m_TerrainGeneratorManager;
@@ -26,19 +26,19 @@ public class LevelPedazo : MonoBehaviour
 
     public void OnEnable()
     {
-        m_SwipeController.OnMovement += MoveTarget;
+        m_SwipeController.onMovement += MoveTarget;
     }
 
     public void OnDisable()
     {
-        m_SwipeController.OnMovement -= MoveTarget;
+        m_SwipeController.onMovement -= MoveTarget;
     }
 
     void MoveTarget(Vector3 m_Direction)
     {
         RaycastHit m_Hitinfo = PlayerBehaviour.m_RaycastDirection;
 
-        if (m_PlayerBehaviour != null && m_PlayerBehaviour.m_CanJump && m_CanMove)
+        if (m_PlayerBehaviour != null && m_PlayerBehaviour.p_CanJump && m_CanMove)
         {
 
             if (Physics.Raycast(m_PlayerBehaviour.transform.position + new Vector3(0, 1f, 0), m_Direction, out m_Hitinfo, 1f))

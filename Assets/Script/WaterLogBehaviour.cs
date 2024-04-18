@@ -14,7 +14,7 @@ public class WaterLogBehaviour : MonoBehaviour
         if (transform.position != waypoints[0].position) 
         {
             transform.position = Vector3.MoveTowards(transform.position, waypoints[0].position, logSpeed * Time.deltaTime);
-            // Vector3 waypointLocation = (waypoints[0].position - transform.position).normalized;
+            
         }
         else
         {
@@ -29,7 +29,7 @@ public class WaterLogBehaviour : MonoBehaviour
 
            
             float centerZ = transform.position.z;
-
+            
             
             Vector3 playerPosition = collision.transform.position;
             playerPosition.z = centerZ;
