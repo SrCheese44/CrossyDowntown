@@ -35,6 +35,9 @@ public class GameUI : MonoBehaviour
 
     public GameObject crownImage;
 
+    public AudioSource bgm;
+    public AudioSource deathSound;
+
     [SerializeField]
     public TextMeshProUGUI textSteps;
 
@@ -104,6 +107,8 @@ public class GameUI : MonoBehaviour
         gameEndingScreen.SetActive(true);
         textEnding.text = "Total coins: " + coinAmount + "\nTotal steps: " + levelBehaviour.m_StepsCounter;
         gameUI.SetActive(false);
+        bgm.Stop();
+        deathSound.Play();
         if (newRecord)
         {
             newRecordLabel.text = "New record!";
