@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerBehaviour : MonoBehaviour
 {
-    public SwipeController m_SwipeController;
+    
 
     public static PlayerBehaviour instance;
 
@@ -44,13 +44,13 @@ public class PlayerBehaviour : MonoBehaviour
 
     public void Start()
     {
-        m_SwipeController.onMovement += MoveTarget;
+        SwipeController.instance.onMovement += MoveTarget;
     }
 
 
     public void OnDisable()
     {
-        m_SwipeController.onMovement -= MoveTarget;
+        SwipeController.instance.onMovement -= MoveTarget;
     }
 
     void MoveTarget(Vector3 m_Direction)

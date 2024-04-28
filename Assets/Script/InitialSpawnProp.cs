@@ -36,7 +36,7 @@ public class Prop1Spawner : MonoBehaviour
 
     public void SpawnRandomPrefab()
     {
-        if (propsActivated < 7 && propsActivated > 5)
+        if (propsActivated < 4 && propsActivated > 2)
         {
             this.enabled = false;
             middleSpawnProp.SetActive(true);

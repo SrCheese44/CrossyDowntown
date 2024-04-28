@@ -11,7 +11,6 @@ public class RandomPrefabSpawner : MonoBehaviour
     [SerializeField] GameObject spawnPoint;
     [SerializeField] GameObject propParent;
 
-    private int propsActivated = 0;
 
 
     private void Start()
@@ -51,7 +50,7 @@ public class RandomPrefabSpawner : MonoBehaviour
             GameObject coin = activeObjectMiddle.transform.GetChild(0).gameObject;
             coin.SetActive(true);
 
-            propsActivated++;
+            
         }
     }
 }
