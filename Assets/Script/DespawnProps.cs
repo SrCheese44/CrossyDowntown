@@ -9,14 +9,14 @@ public class PropDespawner : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Prop"))
+        if (other.CompareTag("InitialProp"))
         {
             
             initialPropSpawn.inactiveObjects.Add(other.gameObject);
             other.gameObject.SetActive(false);
             other.gameObject.transform.parent = null;
         }
-        if (other.CompareTag("InitialProp"))
+        if (other.CompareTag("Prop"))
         {
             spawnProp.inactiveObjectsMiddle.Add(other.gameObject);
             other.gameObject.SetActive(false);

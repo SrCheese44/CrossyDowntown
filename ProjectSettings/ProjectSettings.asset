@@ -138,6 +138,7 @@ PlayerSettings:
   loadStoreDebugModeEnabled: 0
   bundleVersion: 1.0.5
   preloadedAssets:
+  - {fileID: 5359017583314685168, guid: 0482d9bfc5c0e3a4bbf19e8186e5daf3, type: 2}
   - {fileID: 11400000, guid: 7d5ff4f36b63eec44883658704846b9a, type: 2}
   - {fileID: 11400000, guid: 8525f6f805ba63741b3131e16219463f, type: 2}
   metroInputSource: 0
@@ -160,7 +161,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.DefaultCompany.CrossyDowntown
+    Android: com.KeSSoCompany.CrossyDowntown
   buildNumber:
     Standalone: 0
     VisionOS: 0
